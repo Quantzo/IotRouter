@@ -4,21 +4,21 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{C44A863C-38EE-4610-9DBC-424AADC2EA4A}</ProjectGuid>
+    <ProjectGuid>{B1D704CC-DB6E-491C-B54D-B687F3BD0848}</ProjectGuid>
     <OutputType>winmdobj</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IotRouter</RootNamespace>
-    <AssemblyName>IotRouter</AssemblyName>
+    <RootNamespace>ConnectionService</RootNamespace>
+    <AssemblyName>ConnectionService</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <AllowCrossPlatformRetargeting>false</AllowCrossPlatformRetargeting>
-    <PackageCertificateKeyFile>IotRouter_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>ConnectionService_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxPackage>true</AppxPackage>
     <ContainsStartupTask>true</ContainsStartupTask>
   </PropertyGroup>
@@ -96,20 +96,16 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bridge\BluetoothBridge.cs" />
-    <Compile Include="Bridge\CANBridge.cs" />
-    <Compile Include="Bridge\IBridge.cs" />
-    <Compile Include="Networking\Client\IClient.cs" />
-    <Compile Include="Networking\Client\WebApi\WebApiClient.cs" />
-    <Compile Include="Networking\Server\HttpServer.cs" />
-    <Compile Include="StartupTask.cs" />
+    <Compile Include="ConnectionBGTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\AzureIoTHubConnection.cs" />
+    <Compile Include="Server\DatagramServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="IotRouter_TemporaryKey.pfx" />
+    <None Include="ConnectionService_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
@@ -121,7 +117,6 @@
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

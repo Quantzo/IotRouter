@@ -8,15 +8,15 @@
   IgnorableNamespaces="uap mp iot">
 
   <Identity
-    Name="IotRouter-uwp"
-    Publisher="CN=Quantzo"
+    Name="ConnectionService-uwp"
+    Publisher="CN=Admin"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="e39a7832-6af7-48b5-88a9-61e1218c87a7" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="ade75632-64f4-4520-9d27-a39dc84170b0" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>IotRouter</DisplayName>
-    <PublisherDisplayName>Quantzo</PublisherDisplayName>
+    <DisplayName>ConnectionService</DisplayName>
+    <PublisherDisplayName>Admin</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -31,26 +31,25 @@
   <Applications>
     <Application Id="App">
       <uap:VisualElements
-        DisplayName="IotRouter"
+        DisplayName="ConnectionService"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="IotRouter"
+        Description="ConnectionService"
         BackgroundColor="transparent"
         AppListEntry="none">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
       <Extensions>
-        <Extension Category="windows.backgroundTasks" EntryPoint="IotRouter.StartupTask">
-          <BackgroundTasks>
-            <iot:Task Type="startup" />
-          </BackgroundTasks>
-        </Extension>
+        <uap:Extension Category="windows.appService" EntryPoint="ConnectionService.ConnectionBGTask">
+          <uap:AppService Name="App2AppComService" />
+        </uap:Extension>
       </Extensions>
     </Application>
   </Applications>
 
   <Capabilities>
     <Capability Name="internetClient" />
+    <Capability Name="internetClientServer" />
   </Capabilities>
 </Package>
