@@ -100,6 +100,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\AzureIoTHubConnection.cs" />
     <Compile Include="Server\DatagramServer.cs" />
+    <Compile Include="Server\WebSocketHandler.cs" />
+    <Compile Include="Server\WebSocketServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

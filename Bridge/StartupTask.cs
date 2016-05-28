@@ -14,7 +14,7 @@ namespace Bridge
     {
         AppServiceConnection _appServiceConnection;
         BackgroundTaskDeferral _serviceDeferral;
-        //SerialBridge _serialBridge;
+        SerialBridge _serialBridge;
         BluetoothBridge _bluetoothBridge;
 
         public void Run(IBackgroundTaskInstance taskInstance)
@@ -46,11 +46,11 @@ namespace Bridge
             }
         }
 
-        //private void InitializeSerialBridge()
-        //{
-        //    _serialBridge = new SerialBridge(_appServiceConnection);
-        //    var asyncAction = ThreadPool.RunAsync((workItem) => _serialBridge.ReadSerialPort());
-        //}
+        private void InitializeSerialBridge()
+        {
+            _serialBridge = new SerialBridge(_appServiceConnection);
+            var asyncAction = ThreadPool.RunAsync((workItem) => _serialBridge.ReadSerialPort());
+        }
 
         private void InitializeBluetoothBridge()
         {
