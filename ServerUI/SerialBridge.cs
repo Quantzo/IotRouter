@@ -9,48 +9,32 @@ using Windows.Devices.Enumeration;
 using Windows.Devices.SerialCommunication;
 using Windows.Foundation.Collections;
 using Windows.Storage.Streams;
+using Windows.UI.Core;
 
-namespace Bridge
+namespace ServerUI
 {
     public sealed class SerialBridge
     {
         AppServiceConnection _appServiceConnection;
         SerialDevice _realDevice;
+        private MainPage _mainPage;
 
-        public SerialBridge(AppServiceConnection connection)
+
+        public SerialBridge(AppServiceConnection connection, MainPage mainPage, SerialDevice serialDevice)
         {
             _appServiceConnection = connection;
-            Initialize().Wait();
+            _mainPage = mainPage;
+            _realDevice = serialDevice;
         }
 
         public void OnCommandRecived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
         {
             var message = args.Request.Message;
             string command = message["Command"] as string;
-            if (command.Equals("SerialBridge"))
-            {
-                var value = message["Value"] as string;
-                var device = message["Device"] as string;
-                WriteToSerialPort(value);
+            if (command == "RegisterClient" || command == "Disc" || command == "ValueAck")
+                WriteToSerialPort(message["Value"] as string);
 
-            }
         }
-
-        private async Task Initialize()
-        {
-            var device = SerialDevice.GetDeviceSelectorFromUsbVidPid(0x1F00, 0x2012);
-            var usbDevices = await DeviceInformation.FindAllAsync(device);
-            var currentDevice = usbDevices.FirstOrDefault();
-            _realDevice = await SerialDevice.FromIdAsync(currentDevice.Id);
-            _realDevice.Handshake = SerialHandshake.XOnXOff;
-            _realDevice.BaudRate = 9600;
-            _realDevice.Parity = SerialParity.None;
-            _realDevice.StopBits = SerialStopBitCount.One;
-            _realDevice.DataBits = 8;
-            _realDevice.IsDataTerminalReadyEnabled = true;
-        }
-
-
 
         public async void ReadSerialPort()
         {
@@ -67,7 +51,9 @@ namespace Bridge
                 }
                 else
                 {
-                    SendMessageToServer(commandBuilder.ToString());
+                    var value = commandBuilder.ToString();
+                    SendMessageToServer(value);
+                    _mainPage.ChangeValue(value);
                     commandBuilder.Clear();
                 }
 

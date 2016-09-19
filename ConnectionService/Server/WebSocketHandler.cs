@@ -5,20 +5,61 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.System.Threading;
-using static IotWeb.Common.Http.WebSocket;
+using Newtonsoft.Json;
+
 
 namespace ConnectionService.Server
 {
     class WebSocketHandler : IWebSocketRequestHandler
     {
-        private List<WebSocket> Connections = new List<WebSocket>();
-        public event DataReceivedHandler MessageRecived;
+        private Dictionary<string,WebSocket> _webSockets = new Dictionary<string, WebSocket>();
+        public event MessageRecivedHandler MessageRecived;
+        private IdHelper _portMappings;
+
+        public WebSocketHandler(IdHelper portMappings)
+        {
+            _portMappings = portMappings;
+        }
+         
+        
 
         public void Connected(WebSocket socket)
         {
-            Connections.Add(socket);
-            socket.DataReceived += (WebSocket, Frame) => MessageRecived(WebSocket, Frame);
-            socket.ConnectionClosed += (WebSocket) => Connections.Remove(WebSocket);
+            var guid = Guid.NewGuid().ToString();
+            _webSockets.Add(guid, socket);
+            
+
+            socket.DataReceived += (webSocket, frame) => MessageRecived?.Invoke(_webSockets.First(x => x.Value == webSocket).Key,webSocket, frame);
+            socket.ConnectionClosed += (webSocket) =>
+            {
+                var connection = _webSockets.First(s => s.Value == webSocket);
+                _webSockets.Remove(connection.Key);
+            };
+
+            if (_portMappings.IsBindingPosible())
+            {
+                _portMappings.Bind(guid);
+
+                var message = new ServerMessage()
+                {
+                    ClientID = guid,
+                    Command = "Init",
+                    Value = _portMappings.CheckBinding(guid).ToString()
+                };
+                SendMessage(guid, message);
+            }
+            else
+            {
+                var message = new ServerMessage()
+                {
+                    ClientID = guid,
+                    Command = "Init",
+                    Value = "Max Number Of Clients Reached. Please close connection"
+                };
+                SendMessage(guid, message);
+            }
+
+            
         }
 
         public bool WillAcceptRequest(string uri, string protocol)
@@ -28,7 +69,14 @@ namespace ConnectionService.Server
 
         public async Task BroadcastMessage(string message)
         {
-            await ThreadPool.RunAsync((workItem) => Connections?.AsParallel().ForAll(WebSocket => WebSocket.Send(message)));
+            await ThreadPool.RunAsync((workItem) => _webSockets?.AsParallel().ForAll(webSocket => webSocket.Value.Send(message)));
         }
+
+        public async Task SendMessage(string guid, ServerMessage message)
+        {
+            await ThreadPool.RunAsync((workItem) => _webSockets?.First(x => x.Key == guid).Value.Send(JsonConvert.SerializeObject(message)));
+        }
+        public delegate void MessageRecivedHandler(string guid, WebSocket socket, string message);
     }
+
 }

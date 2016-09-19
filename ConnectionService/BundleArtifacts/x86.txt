@@ -1,0 +1,2 @@
+MainPackage=C:\Users\Quantzo\Source\Repos\IotRouter\ConnectionService\bin\x86\Debug\ConnectionService_1.0.1.0_x86_Debug.appx
+SymbolPackage=C:\Users\Quantzo\Desktop\Nowy folder\ConnectionService_1.0.1.0_Debug_Test\ConnectionService_1.0.1.0_x86_Debug.appxsym

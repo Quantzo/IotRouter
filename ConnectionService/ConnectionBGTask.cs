@@ -22,7 +22,8 @@ namespace ConnectionService
         BackgroundTaskDeferral _serviceDeferral;
         AppServiceConnection _appServiceConnection;
         //DatagramServer _server;
-        AzureIoTHubConnection _azureConnection;
+        //AzureIoTHubConnection _azureConnection;
+        private WebSocketServer _webSocketServer;
 
 
         public void Run(IBackgroundTaskInstance taskInstance)
@@ -37,8 +38,10 @@ namespace ConnectionService
 
                 //_server = new DatagramServer(_appServiceConnection);
                 //var asyncAction = ThreadPool.RunAsync((workItem) => _server.StartServer("8000"));
-                _azureConnection = new AzureIoTHubConnection(_appServiceConnection);
-                var asyncAction = ThreadPool.RunAsync((workItem) => _azureConnection.ReceiveCommands());
+                //azureConnection = new AzureIoTHubConnection(_appServiceConnection);
+                //var asyncAction = ThreadPool.RunAsync((workItem) => _azureConnection.ReceiveCommands());
+                _webSocketServer = new WebSocketServer(_appServiceConnection);
+                var asyncAction = ThreadPool.RunAsync((workItem) => _webSocketServer.StartServer(8080, "/sockets/"));
 
             }
         }

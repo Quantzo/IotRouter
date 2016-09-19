@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectionService", "ConnectionService\ConnectionService.csproj", "{B1D704CC-DB6E-491C-B54D-B687F3BD0848}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge", "Bridge\Bridge.csproj", "{3D2E0126-E18D-43FD-9B2E-59D25CCC4502}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerUI", "ServerUI\ServerUI.csproj", "{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,26 @@ Global
 		{3D2E0126-E18D-43FD-9B2E-59D25CCC4502}.Release|x86.ActiveCfg = Release|x86
 		{3D2E0126-E18D-43FD-9B2E-59D25CCC4502}.Release|x86.Build.0 = Release|x86
 		{3D2E0126-E18D-43FD-9B2E-59D25CCC4502}.Release|x86.Deploy.0 = Release|x86
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Debug|ARM.ActiveCfg = Debug|ARM
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Debug|ARM.Build.0 = Debug|ARM
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Debug|ARM.Deploy.0 = Debug|ARM
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Debug|x64.ActiveCfg = Debug|x64
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Debug|x64.Build.0 = Debug|x64
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Debug|x64.Deploy.0 = Debug|x64
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Debug|x86.ActiveCfg = Debug|x86
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Debug|x86.Build.0 = Debug|x86
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Debug|x86.Deploy.0 = Debug|x86
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|Any CPU.ActiveCfg = Release|x86
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|ARM.ActiveCfg = Release|ARM
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|ARM.Build.0 = Release|ARM
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|ARM.Deploy.0 = Release|ARM
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|x64.ActiveCfg = Release|x64
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|x64.Build.0 = Release|x64
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|x64.Deploy.0 = Release|x64
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|x86.ActiveCfg = Release|x86
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|x86.Build.0 = Release|x86
+		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

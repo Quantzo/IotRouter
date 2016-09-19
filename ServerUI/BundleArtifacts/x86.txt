@@ -1,0 +1,2 @@
+MainPackage=C:\Users\Quantzo\Source\Repos\IotRouter\ServerUI\bin\x86\Debug\ServerUI_1.0.0.0_x86_Debug.appx
+SymbolPackage=C:\Users\Quantzo\Desktop\Nowy folder\ServerUI_1.0.0.0_Debug_Test\ServerUI_1.0.0.0_x86_Debug.appxsym
