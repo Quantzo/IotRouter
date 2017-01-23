@@ -12,19 +12,21 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
-
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        
+<!--
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Value" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind CurrentValue}" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Client Count" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind CurrentCount}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+!-->
 
+        <TextBlock Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{x:Bind ConsoleText}"/>
+        
         <Button Grid.Row="2" Grid.Column="1" Content="Start" HorizontalAlignment="Center" VerticalAlignment="Center" Click="{x:Bind OnClick}" IsEnabled="{x:Bind KeyEnabled}"/>
     </Grid>
 </Page>

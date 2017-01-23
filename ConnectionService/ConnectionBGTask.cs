@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Http;
 using Windows.Foundation.Collections;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.AppService;
 using Windows.System.Threading;
-using Windows.Networking.Sockets;
-using System.IO;
-using Windows.Storage.Streams;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using ConnectionService.Server;
+using ConnectionService.Service;
+using ConnectionService.Service.WebSocketService;
 
 namespace ConnectionService
 {
@@ -21,10 +13,27 @@ namespace ConnectionService
     {
         BackgroundTaskDeferral _serviceDeferral;
         AppServiceConnection _appServiceConnection;
-        //DatagramServer _server;
-        //AzureIoTHubConnection _azureConnection;
-        private WebSocketServer _webSocketServer;
+        private List<IBackgroundService> _services = new List<IBackgroundService>();
 
+
+        private void ConfigureServices()
+        {
+            void AddService(IBackgroundService service, WorkItemHandler action)
+            {
+                _services.Add(service);
+                var Aaction = ThreadPool.RunAsync(action);
+            }
+
+            var DatagramServer = new DatagramService("datagram", _appServiceConnection);
+            AddService(DatagramServer, (workItem) => DatagramServer.StartServer("8001"));
+
+            var WebSocketServer = new WebSocketServerService("websock", _appServiceConnection, 5);
+            AddService(WebSocketServer, (workItem) => WebSocketServer.StartServer(8080, "/sockets/"));
+
+            //var AzureConnection = new AzureIoTHubService("azure", _appServiceConnection);
+            //AddService(AzureConnection, (workItem) => AzureConnection.ReceiveCommands());
+
+        }
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {
@@ -35,19 +44,12 @@ namespace ConnectionService
             {
                 _appServiceConnection = appService.AppServiceConnection;
                 _appServiceConnection.RequestReceived += OnRequestReceived;
-
-                //_server = new DatagramServer(_appServiceConnection);
-                //var asyncAction = ThreadPool.RunAsync((workItem) => _server.StartServer("8000"));
-                //azureConnection = new AzureIoTHubConnection(_appServiceConnection);
-                //var asyncAction = ThreadPool.RunAsync((workItem) => _azureConnection.ReceiveCommands());
-                _webSocketServer = new WebSocketServer(_appServiceConnection);
-                var asyncAction = ThreadPool.RunAsync((workItem) => _webSocketServer.StartServer(8080, "/sockets/"));
-
+                ConfigureServices();
             }
         }
 
         private async void OnRequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
-        {
+        {            
             var message = args.Request.Message;
             string command = message["Command"] as string;
 
@@ -66,6 +68,14 @@ namespace ConnectionService
                 case "Quit":
                     {
                         _serviceDeferral.Complete();
+                        break;
+                    }
+
+                case "Message":
+                    {
+                        var route = message["Route"] as string;
+                        var data = message["Message"] as string;
+                        _services.FindAll(i => i.ServiceName == route).ForEach(i => i.OnDataReceived(data, args));
                         break;
                     }
             }

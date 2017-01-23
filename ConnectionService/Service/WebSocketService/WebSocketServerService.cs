@@ -2,50 +2,43 @@
 using IotWeb.Server;
 using static Newtonsoft.Json.JsonConvert;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.AppService;
 using Windows.Foundation.Collections;
 using Windows.System.Threading;
 using Newtonsoft.Json;
 
-namespace ConnectionService.Server
+namespace ConnectionService.Service.WebSocketService
 {
-    public sealed class WebSocketServer
+    public sealed class WebSocketServerService: IBackgroundService
     {
         private AppServiceConnection _appServiceConnection;
         private BaseHttpServer _httpServer;
         private WebSocketHandler _webSockets;
-        private string _currentValue;
+        private string _currentValue = "WebSocketValue";
         private IdHelper _portMapping;
+        private readonly string _name;
 
-        public WebSocketServer(AppServiceConnection connection)
+        string IBackgroundService.ServiceName => _name;
+
+        public WebSocketServerService(string name, AppServiceConnection conection, int maxNumber)
         {
-            _appServiceConnection = connection;
-            _appServiceConnection.RequestReceived += OnRequestReceived;
-            
-            _portMapping = new IdHelper(5);
+            _name = name;
+            _appServiceConnection = conection;       
+            _portMapping = new IdHelper(maxNumber);
         }
 
-        private async void OnRequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+        public async void OnDataReceived(string data, AppServiceRequestReceivedEventArgs args)
         {
-            var message = args.Request.Message;
-            string command = message["Command"] as string;
-            if (command.Equals("Bridge"))
-            {
-                _currentValue = message["SendToServer"] as string;
+            var messageDeferral = args.GetDeferral();
+            var returnMessage = new ValueSet();
+            returnMessage.Add("Status", "Success");
+            var responseStatus = await args.Request.SendResponseAsync(returnMessage);
+            messageDeferral.Complete();
 
-                var messageDeferral = args.GetDeferral();
-                var returnMessage = new ValueSet();
-                returnMessage.Add("Status", "Success");
-                var responseStatus = await args.Request.SendResponseAsync(returnMessage);
-                messageDeferral.Complete();
-
-                //await _webSockets.BroadcastMessage(command);
-            }
+            await _webSockets.BroadcastMessage(data);
         }
+
 
         public async void StartServer(int port, string uri)
         {
@@ -88,7 +81,7 @@ namespace ConnectionService.Server
                     {
                         case "RegisterClient":
                             {
-                                var command = new ValueSet { { "Command", message.Command }, { "Value", message.Value } };
+                                var command = new ValueSet { { "Command", "Message" }, { "Message", message.Value } };
 
                                 var responseStatus = await _appServiceConnection.SendMessageAsync(command);
                                 break;
@@ -108,14 +101,14 @@ namespace ConnectionService.Server
                             }
                         case "ValueAck":
                             {
-                                var command = new ValueSet { { "Command", message.Command }, { "Value", message.Value } };
+                                var command = new ValueSet { { "Command", "Message" }, { "Message", message.Value } };
 
                                 var responseStatus = await _appServiceConnection.SendMessageAsync(command);
                                 break;
                             }
                         case "Disc":
                             {
-                                var command = new ValueSet { { "Command", message.Command }, { "Value", message.Value } };
+                                var command = new ValueSet { { "Command", "Message" }, { "Message", message.Value } };
 
                                 var responseStatus = await _appServiceConnection.SendMessageAsync(command);
                                 _portMapping.UnBind(guid);
@@ -159,6 +152,8 @@ namespace ConnectionService.Server
             }
             
         }
+
+
     }
     internal class ServerMessage
     {

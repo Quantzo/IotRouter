@@ -2,13 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.System.Threading;
 using Newtonsoft.Json;
 
 
-namespace ConnectionService.Server
+namespace ConnectionService.Service.WebSocketService
 {
     class WebSocketHandler : IWebSocketRequestHandler
     {

@@ -8,43 +8,38 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.AppService;
 using Windows.Foundation.Collections;
 
-namespace ConnectionService.Server
+namespace ConnectionService.Service
 {
-    public sealed class AzureIoTHubConnection
+    public sealed class AzureIoTHubService: IBackgroundService
     {
 
         private const string DeviceConnectionString = "HostName=RouterIoTHub.azure-devices.net;DeviceId=RouterIoT;SharedAccessKey=2EAmBtAxqztUZ7Z/LXr/sKcW0BoRyNrusxD8x9XBDDY=";
-        private AppServiceConnection _appServiceConnection;
+        private readonly AppServiceConnection _conection;
         private DeviceClient deviceClient;
+        private readonly string _name;
 
+        public string ServiceName => _name;
 
-        public AzureIoTHubConnection(AppServiceConnection connection)
+        public AzureIoTHubService(string name, AppServiceConnection conection)
         {
-            _appServiceConnection = connection;
+            _conection = conection;
+            _name = name;
             deviceClient = DeviceClient.CreateFromConnectionString(DeviceConnectionString);
-            _appServiceConnection.RequestReceived += OnRequestReceived;
-
         }
 
-        private async void OnRequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+
+        public async void OnDataReceived(string data, AppServiceRequestReceivedEventArgs args)
         {
-            var message = args.Request.Message;
-            string command = message["Command"] as string;
-            if (command.Equals("Bridge"))
-            {
+            var messageDeferral = args.GetDeferral();
+            var returnMessage = new ValueSet();
+            returnMessage.Add("Status", "Success");
+            var responseStatus = await args.Request.SendResponseAsync(returnMessage);
+            messageDeferral.Complete();
 
-                command = message["SendToServer"] as string;
+            await SendEvent(data);
 
-                var messageDeferral = args.GetDeferral();
-                var returnMessage = new ValueSet();
-                returnMessage.Add("Status", "Success");
-                var responseStatus = await args.Request.SendResponseAsync(returnMessage);
-                messageDeferral.Complete();
-                await SendEvent(command);
-            }
 
         }
-
 
         async Task SendEvent(string message)
         {
@@ -93,15 +88,10 @@ namespace ConnectionService.Server
             if(message.Command != null && message.Device != null && message.Value != null)
             {
                 var command = new ValueSet();
-                command.Add("Command", message.Command);
-                command.Add("Device", message.Device);
-                command.Add("Value", message.Value);
-
-                var responseStatus = await _appServiceConnection.SendMessageAsync(command);
+                command.Add("Command", "Message");
+                command.Add("Message", JsonConvert.SerializeObject(message));
+                var responseStatus = await _conection.SendMessageAsync(command);
             }
-
-
-
         }
 
     }

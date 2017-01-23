@@ -105,11 +105,12 @@
   <ItemGroup>
     <Compile Include="ConnectionBGTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\AzureIoTHubConnection.cs" />
-    <Compile Include="Server\DatagramServer.cs" />
-    <Compile Include="Server\IdHelper.cs" />
-    <Compile Include="Server\WebSocketHandler.cs" />
-    <Compile Include="Server\WebSocketServer.cs" />
+    <Compile Include="Service\AzureIoTHubService.cs" />
+    <Compile Include="Service\DatagramService.cs" />
+    <Compile Include="Service\WebSocketService\IdHelper.cs" />
+    <Compile Include="Service\WebSocketService\WebSocketHandler.cs" />
+    <Compile Include="Service\WebSocketService\WebSocketServerService.cs" />
+    <Compile Include="Service\IBackgroundService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

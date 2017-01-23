@@ -53,7 +53,7 @@ namespace ServerUI
                 {
                     var value = commandBuilder.ToString();
                     SendMessageToServer(value);
-                    _mainPage.ChangeValue(value);
+                    //_mainPage.ChangeValue(value);
                     commandBuilder.Clear();
                 }
 
