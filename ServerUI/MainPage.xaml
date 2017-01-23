@@ -12,6 +12,8 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -24,9 +26,23 @@
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Client Count" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind CurrentCount}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 !-->
-
-        <TextBlock Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{x:Bind ConsoleText}"/>
+        <ScrollViewer Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <TextBlock Text="{x:Bind ConsoleText}"/>
+        </ScrollViewer>
+        
         
         <Button Grid.Row="2" Grid.Column="1" Content="Start" HorizontalAlignment="Center" VerticalAlignment="Center" Click="{x:Bind OnClick}" IsEnabled="{x:Bind KeyEnabled}"/>
+        
+        <TextBox Grid.Row="3" Grid.Column="0" Text="{x:Bind DataText, Mode=TwoWay}"/>
+        <Grid Grid.Row="3" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Send WebSock" HorizontalAlignment="Center" VerticalAlignment="Center" Click="{x:Bind OnWebSocketSend}" IsEnabled="{x:Bind Connection}"/>
+            <Button Grid.Column="1" Content="Send Datagram" HorizontalAlignment="Center" VerticalAlignment="Center" Click="{x:Bind OnDatagramSend}" IsEnabled="{x:Bind Connection}"/>
+        </Grid>
+
     </Grid>
 </Page>
+

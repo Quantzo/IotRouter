@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge", "Bridge\Bridge.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerUI", "ServerUI\ServerUI.csproj", "{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatagramTester", "DatagramTester\DatagramTester.csproj", "{C530F9A3-76AC-47F5-B720-24DD778878CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,26 @@ Global
 		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|x86.ActiveCfg = Release|x86
 		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|x86.Build.0 = Release|x86
 		{8DE4DA7A-74E5-4489-A138-1919AFB47B7E}.Release|x86.Deploy.0 = Release|x86
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Debug|ARM.ActiveCfg = Debug|ARM
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Debug|ARM.Build.0 = Debug|ARM
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Debug|ARM.Deploy.0 = Debug|ARM
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Debug|x64.ActiveCfg = Debug|x64
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Debug|x64.Build.0 = Debug|x64
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Debug|x64.Deploy.0 = Debug|x64
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Debug|x86.ActiveCfg = Debug|x86
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Debug|x86.Build.0 = Debug|x86
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Debug|x86.Deploy.0 = Debug|x86
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Release|Any CPU.ActiveCfg = Release|x86
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Release|ARM.ActiveCfg = Release|ARM
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Release|ARM.Build.0 = Release|ARM
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Release|ARM.Deploy.0 = Release|ARM
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Release|x64.ActiveCfg = Release|x64
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Release|x64.Build.0 = Release|x64
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Release|x64.Deploy.0 = Release|x64
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Release|x86.ActiveCfg = Release|x86
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Release|x86.Build.0 = Release|x86
+		{C530F9A3-76AC-47F5-B720-24DD778878CD}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

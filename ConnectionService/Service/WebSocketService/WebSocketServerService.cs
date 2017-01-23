@@ -68,6 +68,8 @@ namespace ConnectionService.Service.WebSocketService
                 _webSockets.SendMessage(guid, messageErr);
 
             }
+            var command = new ValueSet { { "Command", "Message" }, { "Message", message } };
+            var responseStatus = await _appServiceConnection.SendMessageAsync(command);
         }
 
         private async Task ProcessMessage(string guid, ServerMessage message)
@@ -81,9 +83,6 @@ namespace ConnectionService.Service.WebSocketService
                     {
                         case "RegisterClient":
                             {
-                                var command = new ValueSet { { "Command", "Message" }, { "Message", message.Value } };
-
-                                var responseStatus = await _appServiceConnection.SendMessageAsync(command);
                                 break;
                             }
 
@@ -101,16 +100,10 @@ namespace ConnectionService.Service.WebSocketService
                             }
                         case "ValueAck":
                             {
-                                var command = new ValueSet { { "Command", "Message" }, { "Message", message.Value } };
-
-                                var responseStatus = await _appServiceConnection.SendMessageAsync(command);
                                 break;
                             }
                         case "Disc":
                             {
-                                var command = new ValueSet { { "Command", "Message" }, { "Message", message.Value } };
-
-                                var responseStatus = await _appServiceConnection.SendMessageAsync(command);
                                 _portMapping.UnBind(guid);
                                 break;
                             }

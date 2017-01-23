@@ -16,18 +16,20 @@ namespace ConnectionService
         private List<IBackgroundService> _services = new List<IBackgroundService>();
 
 
-        private void ConfigureServices()
+        void AddService(IBackgroundService service, WorkItemHandler action)
         {
-            void AddService(IBackgroundService service, WorkItemHandler action)
-            {
-                _services.Add(service);
-                var Aaction = ThreadPool.RunAsync(action);
-            }
+            _services.Add(service);
+            var Aaction = ThreadPool.RunAsync(action);
+        }
 
-            var DatagramServer = new DatagramService("datagram", _appServiceConnection);
+        private void ConfigureServices(AppServiceConnection appServiceConnection)
+        {
+
+
+            var DatagramServer = new DatagramService("datagram", appServiceConnection);
             AddService(DatagramServer, (workItem) => DatagramServer.StartServer("8001"));
 
-            var WebSocketServer = new WebSocketServerService("websock", _appServiceConnection, 5);
+            var WebSocketServer = new WebSocketServerService("websock", appServiceConnection, 5);
             AddService(WebSocketServer, (workItem) => WebSocketServer.StartServer(8080, "/sockets/"));
 
             //var AzureConnection = new AzureIoTHubService("azure", _appServiceConnection);
@@ -44,7 +46,7 @@ namespace ConnectionService
             {
                 _appServiceConnection = appService.AppServiceConnection;
                 _appServiceConnection.RequestReceived += OnRequestReceived;
-                ConfigureServices();
+                ConfigureServices(_appServiceConnection);
             }
         }
 

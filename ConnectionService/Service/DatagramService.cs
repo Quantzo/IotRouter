@@ -25,12 +25,11 @@ namespace ConnectionService.Service
         public async void OnDataReceived(string data, AppServiceRequestReceivedEventArgs args)
         {
             var messageDeferral = args.GetDeferral();
-            var returnMessage = new ValueSet();
-            returnMessage.Add("Status", "Success");
+            var returnMessage = new ValueSet {{"Status", "Success"}};
             var responseStatus = await args.Request.SendResponseAsync(returnMessage);
             messageDeferral.Complete();
 
-            SendDataToSocket(data);
+            await SendDataToSocket(data);
 
 
         }
@@ -40,13 +39,17 @@ namespace ConnectionService.Service
             _socket = new DatagramSocket();
 
             var control = _socket.Control;
+            
             _socket.MessageReceived += OnMessageRecived;
             await _socket.BindServiceNameAsync(port);
         }
 
-        private void OnMessageRecived(DatagramSocket sender, DatagramSocketMessageReceivedEventArgs args)
+        private async void OnMessageRecived(DatagramSocket sender, DatagramSocketMessageReceivedEventArgs args)
         {
-            _writer = new DataWriter(sender.OutputStream);
+            
+            var outputStream = await _socket.GetOutputStreamAsync(args.RemoteAddress, args.RemotePort);
+            _writer = new DataWriter(outputStream);
+
             ReadMessageFromSocket(args.GetDataReader());
         }
 
@@ -65,15 +68,12 @@ namespace ConnectionService.Service
 
         private async Task ProcessMessage(string message)
         {
-            var command = new ValueSet();
-            command.Add("Command", "Message");
-            command.Add("Route", ServiceName);
-            command.Add("Message", message);
+            var command = new ValueSet {{"Command", "Message"}, {"Route", ServiceName}, {"Message", message}};
             var responseStatus = await _conection.SendMessageAsync(command);
         }
 
 
-        public async void SendDataToSocket(string message)
+        private async Task SendDataToSocket(string message)
         {
             if(_writer != null)
             {

@@ -49,11 +49,25 @@ namespace ServerUI
             }
         }
         private bool _keyEnabled;
+
+
+
+        public bool Connection
+        {
+            get { return _connecton; }
+            set
+            {
+                _connecton = value;
+                Bindings.Update();
+            }
+        }
+        private bool _connecton = false;
+
         //private int _count;
 
         public string ConsoleText
         {
-            get => _text;
+            get { return _text; }
             set
             {
                 _text = value;
@@ -61,6 +75,15 @@ namespace ServerUI
             }
         }
         private string _text;
+
+
+        private string _data;
+
+        public string DataText
+        {
+            get { return _data;}
+            set { _data = value;}
+        }
 
 
         public MainPage()
@@ -76,12 +99,33 @@ namespace ServerUI
         public async void OnClick()
         {
 
-            KeyEnabled = false;
+            
             //_count = 0;
             //await ChangeCount(0);
             
-            Initialize();
+            await Initialize();
             
+        }
+
+        public async void OnDatagramSend()
+        {
+            var message = new ValueSet
+            {
+                { "Command", "Message" },
+                {"Route","datagram" },
+                {"Message", DataText }
+            };
+            var response = await _appServiceConnection.SendMessageAsync(message);
+        }
+        public async void OnWebSocketSend()
+        {
+            var message = new ValueSet
+            {
+                { "Command", "Message" },
+                {"Route","websock" },
+                {"Message", DataText }
+            };
+            var response = await _appServiceConnection.SendMessageAsync(message);
         }
 
         private async Task Initialize()
@@ -96,17 +140,19 @@ namespace ServerUI
             var res = await _appServiceConnection.OpenAsync();
             if (res == AppServiceConnectionStatus.Success)
             {
+                KeyEnabled = false;
+                Connection = true;
                 var message = new ValueSet { { "Command", "Connect" } };
 
                 var response = await _appServiceConnection.SendMessageAsync(message);
-                //if (response.Status == AppServiceResponseStatus.Success)
-                //{
+                if (response.Status == AppServiceResponseStatus.Success)
+                {
                 //    await InitializeSerialBridge();
                     
                 //    _appServiceConnection.RequestReceived += _serialBridge.OnCommandRecived;
-                //    _appServiceConnection.RequestReceived += AppServiceConnectionOnRequestReceived;
+                    _appServiceConnection.RequestReceived += AppServiceConnectionOnRequestReceived;
 
-                //}
+                }
             }
         }
 
